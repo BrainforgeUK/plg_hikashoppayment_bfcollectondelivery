@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" version="2.5" method="upgrade" group="hikashoppayment">
-	<name>Hikashop Brainforge Collect On Delivery Payment Plugin</name>
+	<name>Brainforge Collect on Delivery Payment for Hikashop</name>
 	<creationDate>17 March 2011</creationDate>
-	<version>3.3.0</version>
+	<version>4.0.0</version>
 	<author>Jonathan Brain</author>
 	<authorEmail>brainforge@btinternet.com</authorEmail>
 	<authorUrl>http://www.brainforge.co.uk</authorUrl>
-	<copyright>Copyright (C) 2011 Jonathan Brain derived from collect on delivery plugin from HIKARI SOFTWARE SARL - All rights reserved.</copyright>
+	<copyright>Copyright (C) 2011-2018 Jonathan Brain derived from collect on delivery plugin from HIKARI SOFTWARE SARL - All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>This plugin enables you to setup your Collect On Delivery payment system</description>
 	<files>
@@ -15,13 +15,17 @@
 		<filename>index.html</filename>
 	</files>
 	<params addpath="/components/com_hikashop/params">
-		<param name="pluginoptions" type="pluginoptions" default="plugin" label="hikashop" description="HikaShop options" />
+		<param name="pluginoptions" type="pluginoptions" default="plugin" label="hikashop" description="HikaShop options"/>
 	</params>
 	<config>
 		<fields name="params" addfieldpath="/components/com_hikashop/fields">
 			<fieldset name="basic">
-				<field id="pluginoptions" name="pluginoptions" type="pluginoptions" label="hikashop" description="HikaShop options" />
+				<field id="pluginoptions" name="pluginoptions" type="pluginoptions" label="hikashop" description="HikaShop options"/>
 			</fieldset>
 		</fields>
 	</config>
+
+  <updateservers>
+      <server type="extension" priority="1" name="Brainforge Collect on Delivery Payment for Hikashop">https://brainforge.co.uk/media/com_bfupdater/plg_bfcollectondelivery.xml</server>
+  </updateservers>
 </extension>

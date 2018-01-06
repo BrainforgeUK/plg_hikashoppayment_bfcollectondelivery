@@ -1,9 +1,9 @@
 <?php
 /**
  * @package		HikaShop for Joomla!
- * @version		2.3.3
+ * @version	3.1.1
  * @author		hikashop.com
- * @copyright	(C) 2010-2011 HIKARI SOFTWARE. All rights reserved.
+ * @copyright	(C) 2010-2017 HIKARI SOFTWARE. All rights reserved.
  * @license		GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 defined('_JEXEC') or die('Restricted access');
@@ -20,36 +20,30 @@ class plgHikashoppaymentBF_Collectondelivery extends hikashopPaymentPlugin {
 		'information' => array('ADDITIONAL_INFORMATION', 'big-textarea')
 	);
 
-	function getPaymentDefaultValues(&$element) {
+	public function getPaymentDefaultValues(&$element) {
 		$element->payment_name = 'Collect on delivery';
 		$element->payment_description = 'You can pay when your package is delivered by using this payment method.';
 		$element->payment_images = 'Collect_on_delivery';
 		$element->payment_params->order_status = 'created';
 	}
 
-	function onAfterOrderConfirm(&$order, &$methods, $method_id) {
+	public function onAfterOrderConfirm(&$order, &$methods, $method_id) {
 		parent::onAfterOrderConfirm($order, $methods, $method_id);
-		$method = $methods[$method_id];
-		if(isset($order->order_status) && !empty($method->payment_params->order_status) && $method->payment_params->order_status != $order->order_status) {
-			$orderObj = new stdClass();
-			$orderObj->order_id = $order->order_id;
-			$orderObj->order_status = $method->payment_params->order_status;
-			if(!empty($method->payment_params->status_notif_email))
-				$orderObj->history->history_notified = $method->payment_params->status_notif_email;
-			$orderClass = hikashop_get('class.order');
-			$orderClass->save($orderObj);
-		}
+		if($order->order_status != $this->payment_params->order_status)
+			$this->modifyOrder($order->order_id, $this->payment_params->order_status, (bool)@$this->payment_params->status_notif_email, false);
 
 		$this->removeCart = true;
 
 		$currencyClass = hikashop_get('class.currency');
 		$this->amount = $currencyClass->format($order->order_full_price, $order->order_currency_id);
 		$this->order_number = $order->order_number;
+		$this->order = $order;
 
-  	$this->information = $method->payment_params->information;
-  	if(preg_match('#^[a-z0-9_]*$#i', $this->information)){
+		$method = $methods[$method_id];
+    $this->information = $method->payment_params->information;
+    if(preg_match('#^[a-z0-9_]*$#i', $this->information)){
       $this->information = JText::_($this->information);
-  	}
+    }
 
 		$this->showPage('end');
 	}
